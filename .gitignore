@@ -1,0 +1,13 @@
+# Arduino build files
+*.ino.cpp
+*.elf
+*.bin
+*.hex
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build folders
+/build
+/.pio
