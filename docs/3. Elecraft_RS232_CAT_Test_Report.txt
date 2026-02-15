@@ -1,0 +1,111 @@
+RS232 ELECRAFT CAT TEST REPORT
+
+1. DESCRIPTION OF TEST SETUP
+
+Hardware:
+
+-   ESP32 with MAX3232 RS232 level converter
+-   DB9 connector on the custom PCB
+-   External RS232-to-USB adapter connected to DB9
+-   Second PC running CoolTerm
+-   First PC running Arduino IDE Serial Monitor (USB connection)
+
+Connections:
+
+PC1 (USB) <-> ESP32 USB Serial (115200 baud) 
+ESP32 UART2 <-> MAX3232 <-> DB9 <-> 
+RS232-USB Adapter <-> PC2 (CoolTerm)
+
+The ESP32 bridges between: - USB Serial (Arduino IDE) - Hardware UART
+(RS232 side)
+
+For this test, no real Elecraft radio was connected. CoolTerm simulated
+the KX2/KX3 radio.
+
+------------------------------------------------------------------------
+
+2. SOFTWARE CONFIGURATION
+
+Arduino Serial Monitor: - 115200 baud - Used to send commands to ESP32
+
+ESP32 RS232 Settings: PROTO ELE TXFMT ASCII BAUD 38400
+
+CoolTerm: - 38400 baud - 8 data bits - No parity - 1 stop bit - No flow
+control
+
+------------------------------------------------------------------------
+
+3. TEST PROCEDURE
+
+Step 1 – Frequency Request
+
+Arduino sent: FA;
+
+CoolTerm replied: FA00014074000;
+
+Meaning: - FA; = Request VFO A frequency - FA00014074000; = 14.074000
+MHz
+
+Result: ESP32 correctly decoded the response and displayed: VFO A FREQ:
+14.074000 MHz
+
+Step 2 – Mode Request
+
+Arduino sent: MD;
+
+CoolTerm replied: MD2;
+
+Meaning: - MD; = Request mode - MD2; = USB mode
+
+Result: ESP32 correctly decoded and displayed: MODE: USB
+
+Step 3 – Mode Set
+
+Arduino sent: MD3;
+
+CoolTerm replied: MD3;
+
+Meaning: - MD3; = Set CW mode
+
+Result: ESP32 confirmed and decoded: MODE: CW
+
+Step 4 – PTT Control
+
+Arduino sent: TX; CoolTerm replied: tx;
+
+Meaning: - TX; = Transmit ON
+
+Arduino sent: RX; CoolTerm replied: rx;
+
+Meaning: - RX; = Return to Receive
+
+Result: ESP32 correctly interpreted both commands and displayed: PTT: ON
+PTT: OFF
+
+------------------------------------------------------------------------
+
+4. DATA TRANSMISSION DETAILS
+
+Example: 46 41 3B = “FA;” 4D 44 32 3B = “MD2;” 54 58 3B = “TX;”
+
+0D 0A = Carriage Return + Line Feed (Enter key)
+
+CoolTerm sends CR/LF when Enter is pressed. ESP32 receives and displays
+these bytes as well.
+
+------------------------------------------------------------------------
+
+5. CONCLUSION
+
+The test confirms:
+
+-   RS232 transmission from ESP32 to PC works correctly.
+-   RS232 reception from PC to ESP32 works correctly.
+-   ASCII CAT command parsing works correctly.
+-   Elecraft CAT decoding logic operates as expected.
+-   Baudrate configuration is correct.
+-   Hardware wiring and level conversion are correct.
+
+The system is fully functional and ready for connection to a real
+Elecraft KX2 or KX3 radio.
+

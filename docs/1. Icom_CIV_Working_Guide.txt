@@ -1,0 +1,66 @@
+ICOM CI-V WORKING GUIDE
+
+Setup confirmed: 
+- IC-7300 Address: 0x94 
+- IC-706MKIIg Address: 0x58 
+- CI-V Baudrate: 9600 
+- Controller Address: E0 
+- PROTO ICOM - TXFMT HEX (Kommunikation im Hex-Format)
+
+  CI-V FRAME STRUCTURE
+  ----------------------
+FE FE [DATA…] FD
+FE FE = Start TO = Target radio (94 or 58) FROM = Controller (E0) CMD =
+Command FD = End
+
+  READ FREQUENCY
+  ----------------
+IC-7300: FE FE 94 E0 03 FD
+IC-706: FE FE 58 E0 03 FD
+
+  READ MODE
+  -----------
+IC-7300: FE FE 94 E0 04 FD
+IC-706: FE FE 58 E0 04 FD
+
+  SET MODE
+  ----------
+Mode Codes: 00 = LSB 01 = USB 02 = AM 03 = CW 04 = RTTY 05 = FM
+Example – Set 706 to USB: FE FE 58 E0 01 01 FD
+Example – Set 7300 to AM: FE FE 94 E0 01 02 FD
+
+  SET FREQUENCY
+  ---------------
+Frequency must be sent as 5 BCD bytes (LSB first).
+Example: 14.330.000 MHz = 00 00 33 14 00
+IC-7300: FE FE 94 E0 05 00 00 33 14 00 FD
+IC-706: FE FE 58 E0 05 00 00 33 14 00 FD
+Note: If radio returns FB -> NAK, the command was rejected. Check: -
+Frequency format - Band limits - Command validity
+
+  PTT CONTROL
+  -------------
+PTT ON (7300): FE FE 94 E0 1C 00 01 FD
+PTT OFF (7300): FE FE 94 E0 1C 00 00 FD
+For IC-706 use 58 instead of 94.
+
+  IMPORTANT NOTES
+  -----------------
+-   Only the addressed radio answers.
+-   TO=00 is broadcast (used by transceive).
+-   FB = NAK (command rejected).
+-   When Transceive is ON, radios broadcast changes automatically.
+-   Echo lines are normal and filtered by the sketch.
+
+  MINIMAL DAILY WORKFLOW
+  ------------------------
+
+Check 7300: FE FE 94 E0 03 FD FE FE 94 E0 04 FD
+
+Check 706: FE FE 58 E0 03 FD FE FE 58 E0 04 FD
+
+Set Mode: FE FE 58 E0 01 01 FD
+
+Set Frequency: FE FE 94 E0 05 00 00 33 14 00 FD
+
+End of document.

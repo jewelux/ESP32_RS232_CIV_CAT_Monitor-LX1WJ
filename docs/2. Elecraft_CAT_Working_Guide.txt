@@ -1,0 +1,62 @@
+ELECRAFT KX2 / KX3 – CAT MINIMAL WORKING GUIDE
+
+Confirmed setup requirements: 
+- PROTO ELE 
+- TXFMT ASCII 
+- Correct CAT Baudrate (typically 38400 or 19200) 
+- Each command must end with “;”
+
+BASIC PRINCIPLES
+------------------
+
+Elecraft CAT uses pure ASCII commands.
+There are: 
+- No binary frames 
+- No FE FE structure 
+- No BCD format 
+- No broadcast traffic
+Each command ends with “;” and the radio replies with “;”
+
+READ FREQUENCY
+----------------
+Command: FA;
+Expected Reply Example: FA00014033000;
+Meaning: - 11 digits - Frequency in Hz - Leading zeros included
+Example: FA00014033000; = 14.033.000 MHz
+
+READ MODE
+-----------
+Command: MD;
+Expected Reply Example: MD2;
+Mode Codes: 1 = LSB 2 = USB 3 = CW 4 = FM 5 = AM 6 = DATA 7 = CW-REV 9 =
+DATA-REV
+
+SET MODE
+----------
+Example – Set USB: MD2;
+Expected Reply: MD2;
+
+SET FREQUENCY
+---------------
+Example – Set 14.060.000 MHz: FA00014060000;
+Expected Reply: FA00014060000;
+
+PTT CONTROL
+-------------
+PTT ON: TX;
+PTT OFF: RX;
+The sketch will display: ELE: TX; -> PTT=ON ELE: RX; -> PTT=OFF
+
+MINIMAL DAILY TEST SEQUENCE
+-----------------------------
+Enter exactly the following commands:
+PROTO ELE TXFMT ASCII BAUD 38400
+FA; MD; MD2; TX; RX;
+Expected behavior:
+-   FA; -> radio returns current frequency
+-   MD; -> radio returns current mode
+-   MD2; -> mode changes to USB
+-   TX; -> PTT ON
+-   RX; -> PTT OFF
+If no reply: - Check baudrate - Check CAT enabled in radio menu - Check
+RS232 wiring (RX/TX not swapped) - Check flow control disabled
