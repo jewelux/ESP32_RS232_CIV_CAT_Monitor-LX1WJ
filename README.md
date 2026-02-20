@@ -5,6 +5,10 @@ Ham Radio Utility for monitoring and controlling Icom CI-V and Elecraft CAT radi
 Author: LX1WJ
 
 ---
+## ⚠️ Disclaimer / Safety Notice
+This project is provided **for experimental and educational use only**, **AS IS**, without any warranty.
+- The device is **not a certified measuring instrument**.
+- You are responsible for correct wiring, safe RF practices, and compliance with local regulations.
 
 ## Overview
 
