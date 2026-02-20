@@ -10,6 +10,8 @@ This project is provided **for experimental and educational use only**, **AS IS*
 - The device is **not a certified measuring instrument**.
 - You are responsible for correct wiring, safe RF practices, and compliance with local regulations.
 
+**Use at your own risk.**
+
 ## Overview
 
 This project provides a dual-protocol RS232 monitor and command tool for:
